@@ -2,6 +2,23 @@
 <!doctype html>
 <html lang="en">
   <head>
+
+  <script type="text/javascript">
+  function getLike(id)
+  {
+
+
+    var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4)
+				{
+            }
+        };
+        xmlhttp.open("GET", "getopr.php?pid="+id, true);
+        xmlhttp.send();
+
+  }
+  </script>
   
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>  
@@ -31,10 +48,13 @@
               ?>
 
               <a class="navbar-brand" href="#"><img src="images\\<?php echo $x[6]?>" height="50" width="50"></a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <h3><a href='lout.php'>Logout</a></h3>
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
             
+
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                   <li class="nav-item active">
@@ -128,23 +148,85 @@ echo "Media Uploaded";
             </div>
          </div>
 
-  <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-              <div class="row">
-            <div class="col-md-3">Image</div>
 
-            <div class="col-md-5">Image</div>
-            <div class="col-md-4">Date</div>
+         <?php
+            $conn=mysqli_connect('localhost','root','');
+            mysqli_select_db($conn,'sos');
+            $q="select * from post";
+            $rs=mysqli_query($conn,$q)or die("Unable to exeucte".mysqli_error($conn));
+            while($r=mysqli_fetch_array($rs))
+            {
+            $u=$r[1]; 
+            $q="select * from signup where email='$u'";
+            $rs1=mysqli_query($con,$q);
+            $r1=mysqli_fetch_array($rs1);
+            $im=$r1[6];
+            $un=$r1[1];
+            echo "<br>";
+           ?>
+          
+
+
+  <div class="row" style="margin-top:20px">
+    <div class="col-md-2"></div>
+    <div class="col-md-8" style="border:2px solid orange">
+              <div class="row">
+          <div class="col-md-3"><img src="<?php echo "images\\".$im;?>" height='50' width=50>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <b><?php echo $un;?></b>
+              <?php
+                
+              ?>
+            </div>
+
+            <div class="col-md-5"></div>
+            <div class="col-md-4"><?php echo $r[4];?></div>
             
           </div>
-            <div class="row">
-            <div class="col-md-12"></div>
-            </div>
             
+            
+<div class="row">
+<div class="col-md-1"></div>
+<div class="col-md-10" style="border:2px solid blue">
+
+<?php
+if($r[2]=="text")
+{
+
+  ?>
+  <h4><?php echo $r[3];?></h4>
+<?php
+}
+else
+{
+?>
+<img src="<?php echo "postmedia\\".$r[3];?>" height='300' width='100%'>
+<?php
+
+}
+?>
+</div>
+
+</div>
+
+<div class="row">
+<div class="col-md-3"><a href='#' onclick='getLike(<?php echo $r[0]?>)'>Like</a></div>
+<div class="col-md-3">Comment</div>
+<div class="col-md-3">Share</div>
+
+</div>
 
     </div>
+<div class="col-md-2"></div>
+</div>
 
+<?php
+            }
+?>
+
+<div class="row">
+            <div class="col-md-12"></div>
+            </div>
             </div>
  </div>
   </body>
